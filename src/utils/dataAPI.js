@@ -13,7 +13,7 @@ async function getDataFromApi() {
 export const getItems = async () => {
   const dataFromApi = await getDataFromApi();
   const items = [];
-  dataFromApi?.forEach((item, index) => {
+  dataFromApi.forEach((item, index) => {
     let singleItem = {
       id: item.id,
       name: item.superhero,
@@ -37,7 +37,4 @@ export const deleteItem = async (id) => {
     },
     body: null,
   });
-
-  const data = await response.json();
-  console.log('data from delete function', data);
 };

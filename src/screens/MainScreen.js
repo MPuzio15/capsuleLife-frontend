@@ -22,8 +22,20 @@ const MainScreen = ({items}) => {
 
   const imageScale = scrollY.interpolate({
     inputRange: [0, 300],
-    outputRange: [1.1, 1],
+    outputRange: [1, 0.8],
   });
+
+  const AnimatedImageStyle = [
+    styles.backgroundImage,
+    {
+      opacity: imageOpacity,
+      // transform: [
+      //   {
+      //     scale: imageScale,
+      //   },
+      // ],
+    },
+  ];
 
   return (
     <>
@@ -31,38 +43,32 @@ const MainScreen = ({items}) => {
         style={{
           zIndex: 2,
           height: 50,
-          position: 'relative',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '100%',
         }}>
         <Animated.View
           style={{
-            backgroundColor: 'black',
             flex: 1,
             opacity: headerOpacity,
           }}
         />
         <TopHeader />
       </View>
-      <Animated.Image
-        style={[
-          styles.backgroundImage,
-          {
-            opacity: imageOpacity,
-            transform: [
-              {
-                scale: imageScale,
-              },
-            ],
-          },
-        ]}
-        source={image}
-      />
+
       <AnimatedFlatList
         data={items}
         scrollEventThrottle={16}
-        renderItem={({item}) => {
-          return <Item task={item} />;
+        renderItem={({item, index}) => {
+          return <Item task={item} index={index} />;
         }}
         keyExtractor={(item, i) => i.toString()}
+        ListHeaderComponent={() => (
+          <Animated.Image style={AnimatedImageStyle} source={image} />
+        )}
         bounces={false}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
@@ -75,9 +81,7 @@ const MainScreen = ({items}) => {
             useNativeDriver: true,
           },
         )}
-        contentContainerStyle={{
-          marginTop: 280,
-        }}
+        // contentContainerStyle={{backgroundColor: 'green'}}
       />
     </>
   );
@@ -95,7 +99,6 @@ const styles = StyleSheet.create({
     height: 300,
   },
   backgroundImage: {
-    position: 'absolute',
     width: '100%',
     height: 300,
   },

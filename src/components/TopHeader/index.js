@@ -10,11 +10,11 @@ import {deleteListActions} from '../../store';
 const TopHeader = ({deleteList, setDeleteListEmpty}) => {
   console.log('deleteList: ', deleteList);
   const handleDeleteAll = () => {
-    // deleteList
-    //   .forEach((item) => {
-    //     // deleteItem(item.id);
-    //   })
-    //   .then(setDeleteListEmpty());
+    deleteList.forEach((item) => {
+      console.log(item.id);
+      deleteItem(item.id);
+    })(setDeleteListEmpty());
+    console.log(deleteList);
   };
 
   return (

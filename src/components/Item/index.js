@@ -17,15 +17,11 @@ import {itemsActions, deleteListActions} from '../../store';
 const statusBarHeight = Platform.OS === 'ios' ? 20 : getStatusBarHeight();
 const {width, height} = Dimensions.get('window');
 
-const Item = ({task, items, setCompleted, setItemToDelete}) => {
+const Item = ({task, index, items, setCompleted, setItemToDelete}) => {
   const {id, name, publisher, isCompleted} = task;
 
   return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        {marginBottom: id === items[items.length - 1].id ? 310 : 0},
-      ]}>
+    <TouchableOpacity style={styles.container}>
       <Text
         style={[
           styles.text,
@@ -33,7 +29,7 @@ const Item = ({task, items, setCompleted, setItemToDelete}) => {
             textDecorationLine: isCompleted ? 'line-through' : 'none',
             color: isCompleted ? 'gray' : 'black',
           },
-        ]}>{`${id.toString()}.   ${name}`}</Text>
+        ]}>{`${(index + 1).toString()}.   ${name}`}</Text>
       <TouchableOpacity
         onPress={() => {
           setCompleted(task.id);
