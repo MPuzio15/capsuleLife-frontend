@@ -4,7 +4,7 @@ const deleteListSlice = createSlice({
   name: 'deleteList',
   initialState: [],
   reducers: {
-    setDeleteListEmpty: () => [...initialState],
+    setDeleteListEmpty: () => [],
     setItemToDelete: (state, action) => {
       return [...state, action.payload];
     },

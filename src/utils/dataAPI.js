@@ -1,6 +1,19 @@
 // const uri = 'https://localhost:5001/api/ItemsToGetRidOff/';
 const uri = 'https://us-central1-itfighters-hero.cloudfunctions.net/api/hero';
 
+export const fetchData = async () => {
+  const itemsToSet = [];
+  const list = await getItems();
+  list.forEach((item) => {
+    const task = {
+      ...item,
+      isCompleted: false,
+    };
+    itemsToSet.push(task);
+  });
+  return itemsToSet;
+};
+
 async function getDataFromApi() {
   try {
     const response = await fetch(uri);
@@ -12,6 +25,7 @@ async function getDataFromApi() {
 }
 export const getItems = async () => {
   const dataFromApi = await getDataFromApi();
+  console.log('***************', dataFromApi);
   const items = [];
   dataFromApi.forEach((item, index) => {
     let singleItem = {
@@ -37,4 +51,5 @@ export const deleteItem = async (id) => {
     },
     body: null,
   });
+  return response;
 };

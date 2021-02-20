@@ -6,28 +6,20 @@ import {connect} from 'react-redux';
 import MainScreen from './MainScreen';
 import LoadingScreen from './LoadingScreen';
 
-import {getItems} from '../utils/dataAPI';
-import {itemsActions} from '../store';
+import {fetchData} from '../utils/dataAPI';
+import {deleteListActions, itemsActions} from '../store';
 
-const AppScreen = ({items, setItemsList}) => {
+const AppScreen = ({items, setItemsList, setDeleteListEmpty, deleteList}) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const getItemsFromAPI = async () => {
+    const itemsToSet = await fetchData();
+    setItemsList(itemsToSet);
+    setIsLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const itemsToSet = [];
-      const list = await getItems();
-      list.forEach((item) => {
-        const task = {
-          ...item,
-          isCompleted: false,
-        };
-        itemsToSet.push(task);
-      });
-      setItemsList(itemsToSet);
-      setIsLoading(false);
-    };
-    fetchData();
-  }, [setItemsList]);
+    if (deleteList.length === 0) getItemsFromAPI();
+  }, [deleteList]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,10 +30,13 @@ const AppScreen = ({items, setItemsList}) => {
 
 const mapState = (state) => ({
   items: state.items,
+  deleteList: state.deleteList,
 });
 
 const mapDispatch = (dispatch) => ({
   setItemsList: (data) => dispatch(itemsActions.setItemsList(data)),
+  setDeleteListEmpty: (list) =>
+    dispatch(deleteListActions.setDeleteListEmpty(list)),
 });
 
 export default connect(mapState, mapDispatch)(AppScreen);
